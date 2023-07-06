@@ -37,7 +37,6 @@ function App() {
         decks.map((deck) => (
           <li key={deck._id}>
             <button onClick={() => handleDeleteDeck(deck._id)}>X</button>
-            {deck.title}
             <Link to={`/decks/:${deck._id}`}>{deck.title}</Link>
           </li>
         ))
