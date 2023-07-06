@@ -15,7 +15,7 @@ function App() {
 
   async function handleCreateDeck(e: React.FormEvent) {
     e.preventDefault();
-    await fetch('http://localhost:5001/decks', {
+    const response = await fetch('http://localhost:5001/decks', {
       method: "POST",
       body: JSON.stringify({
         title,
@@ -24,6 +24,9 @@ function App() {
         "Content-Type": "application/json"
       }
     });
+    // Optimistic Updating
+    const deck = await response.json();
+    setDecks([...decks, deck]);
     setTitle("");
   }
 
@@ -31,7 +34,7 @@ function App() {
     await fetch(`http://localhost:5001/decks/${deckID}`, {
       method: "DELETE",
     });
-    // Optimistic updating
+    // Optimistic Updating
     setDecks(decks.filter((deck) => deck._id !== deckID))
   }
 
