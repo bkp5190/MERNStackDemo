@@ -3,34 +3,24 @@ import mongoose from "mongoose";
 import cors from "cors";
 import Deck from "./models/Deck";
 import { config } from 'dotenv';
+import { getDecksCotroller } from "./controllers/getDeckController";
+import { createDeckController } from "./controllers/createDeckController";
+import { deleteDeckController } from "./controllers/deleteDeckController";
 
 config();
 
-const app = express();
 const PORT = 5001;
+const app = express();
 
-app.use(cors());
+app.use(
+    cors({
+        origin: "*",
+    }));
 app.use(express.json());
 
-app.get('/decks', async (req: Request, res: Response) => {
-    const decks = await Deck.find();
-    res.json(decks)
-})
-
-app.post('/decks', async (req: Request, res: Response) => {
-    const newDeck = new Deck({
-        title: req.body.title,
-    });
-    const createdDeck = await newDeck.save();
-    res.json(createdDeck);
-})
-
-app.delete('/decks/:deckId', async (req: Request, res: Response) => {
-    const deckId = req.params.deckId;
-    const deletedDeck = await Deck.findByIdAndDelete(deckId);
-    res.json(deletedDeck)
-})
-
+app.get('/decks', getDecksCotroller);
+app.post('/decks', createDeckController);
+app.delete('/decks/:deckId', deleteDeckController);
 
 mongoose.connect(process.env.MONGO_URL!).then(() => {
     console.log(`Listening on port ${PORT}`)
