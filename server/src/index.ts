@@ -23,7 +23,7 @@ app.get('/decks', getDecksCotroller);
 app.post('/decks', createDeckController);
 app.delete('/decks/:deckId', deleteDeckController);
 
-app.post('/decks/:deckId/cards', createCardForDeckController);
+app.post("/decks/:deckId/cards", createCardForDeckController);
 
 mongoose.connect(process.env.MONGO_URL!).then(() => {
     console.log(`Listening on port ${PORT}`)
