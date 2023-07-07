@@ -1,62 +1,59 @@
-import React, { useEffect, useState } from "react";
-import { createCard } from "./api/createCard";
-import { useParams } from "react-router-dom";
-import { TDeck } from "./api/getDecks";
-import { getDeck } from "./api/getDeck";
-import { deleteCard } from "./api/deleteCard";
-import "./Deck.css";
+import { useEffect, useState } from 'react'
+import './App.css'
+import { Link } from 'react-router-dom'
+import { deleteDeck } from './api/deleteDeck'
+import { TDeck, getDecks } from './api/getDecks'
+import { createDeck } from './api/createDeck'
 
-export default function Deck() {
-  const [deck, setDeck] = useState<TDeck | undefined>();
-  const [cards, setCards] = useState<string[]>([]);
-  const [text, setText] = useState("");
-  const { deckId } = useParams();
+function Deck() {
+  const [cards, setCards] = useState<TDeck[]>([]);
+  const [title, setText] = useState('');
 
-  async function handleCreateDeck(e: React.FormEvent) {
+  async function handleCreateCard(e: React.FormEvent) {
     e.preventDefault();
-    const { cards: serverCards } = await createCard(deckId!, text);
-    setCards(serverCards);
+    // Optimistic Updating
+    const card = await createCard(text);
+    setCards([...cards, card]);
     setText("");
   }
 
-  async function handleDeleteCard(index: number) {
-    if (!deckId) return;
-    const newDeck = await deleteCard(deckId, index);
-    setCards(newDeck.cards);
-  }
+//   async function handleDeleteDeck(deckId: string) {
+//     await deleteDeck(deckId);
+//     // Optimistic Updating
+//     setDecks(decks.filter((deck) => deck._id !== deckId))
+//   }
 
-  useEffect(() => {
-    async function fetchDeck() {
-      if (!deckId) return;
-      const newDeck = await getDeck(deckId);
-      setDeck(newDeck);
-      setCards(newDeck.cards);
-    }
-    fetchDeck();
-  }, [deckId]);
+//   useEffect(() => {
+//     async function fetchDecks() {
+//       const newDecks = await getDecks();
+//       setDecks(newDecks);
+//     }
+//     fetchDecks();
+//   }, []);
 
-  return (
-    <div className="Deck">
-      <h1>{deck?.title}</h1>
-      <ul className="cards">
-        {cards.map((card, index) => (
-          <li key={index}>
-            <button onClick={() => handleDeleteCard(index)}>X</button>
-            {card}
+  return <div className='App'>
+    {/* <ul className="decks">
+      {
+        decks.map((deck) => (
+          <li key={deck._id}>
+            <button onClick={() => handleDeleteDeck(deck._id)}>X</button>
+            <Link to={`/decks/:${deck._id}`}>{deck.title}</Link>
           </li>
-        ))}
-      </ul>
-      <form onSubmit={handleCreateDeck}>
-        <label htmlFor="card-text">Card Text</label>
-        <input
-          id="card-text"
-          value={text}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+        ))
+      }
+    </ul> */}
+    <form onSubmit={handleCreateCard}>
+      <label htmlFor='card-title'>Deck Title</label>
+      <input 
+        id='card-title'
+        value={title}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setText(e.target.value);
           }}
-        />
-        <button>Create Card</button>
-      </form>
-    </div>
-  );
+      />
+      <button>Create Deck</button>
+    </form>
+  </div>
 }
+
+export default Deck;
