@@ -1,18 +1,19 @@
-import express, { Request, Response } from "express";
-import mongoose from "mongoose";
-import cors from "cors";
-import Deck from "./models/Deck";
-import { config } from 'dotenv';
-import { getDecksController } from "../controllers/getDecksController";
-import { createDeckController } from "../controllers/createDeckController";
-import { deleteDeckController } from "../controllers/deleteDeckController";
-import { getCardsController } from "../controllers/getCardsController";
-import { createCardController } from "../controllers/createCardController";
-
+import { config } from "dotenv";
 config();
 
-const app = express();
+import express from "express";
+import mongoose from "mongoose";
+import cors from "cors";
+import { getDecksController } from "./controllers/getDecksController";
+import { createDeckController } from "./controllers/createDeckController";
+import { deleteDeckController } from "./controllers/deleteDeckController";
+import { getDeckController } from "./controllers/getDeckController";
+import { createCardForDeckController } from "./controllers/createCardForDeckController";
+import { deleteCardOnDeckController } from "./controllers/deleteCardOnDeckController";
+
 const PORT = 5001;
+
+const app = express();
 
 app.use(
   cors({
@@ -21,16 +22,14 @@ app.use(
 );
 app.use(express.json());
 
-app.get('/decks', getDecksController);
-app.post('/decks', createDeckController);
-app.delete('/decks/:deckId', deleteDeckController)
-
-
-app.get("/decks/:deckId/cards", getCardsController);
-app.post('/decks/:deckId/cards', createCardController);
-
+app.get("/decks", getDecksController);
+app.post("/decks", createDeckController);
+app.delete("/decks/:deckId", deleteDeckController);
+app.get("/decks/:deckId", getDeckController);
+app.post("/decks/:deckId/cards", createCardForDeckController);
+app.delete("/decks/:deckId/cards/:index", deleteCardOnDeckController);
 
 mongoose.connect(process.env.MONGO_URL!).then(() => {
-    console.log(`Listening on port ${PORT}`)
-    app.listen(PORT);
-})
+  console.log(`listening on port ${PORT}`);
+  app.listen(PORT);
+});

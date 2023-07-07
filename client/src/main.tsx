@@ -1,10 +1,10 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import App from './App.tsx'
-import './index.css'
-import { element } from 'prop-types';
-import Deck from './Deck.tsx';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import "./index.css";
+import { createBrowserRouter, RouterProvider, Route } from "react-router-dom";
+import Deck from "./Deck";
+import { Header } from "./Header";
 
 const router = createBrowserRouter([
   {
@@ -14,11 +14,14 @@ const router = createBrowserRouter([
   {
     path: "/decks/:deckId",
     element: <Deck />,
-  }
+  },
 ]);
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>,
-)
+    <div className="page">
+      <Header />
+      <RouterProvider router={router} />
+    </div>
+  </React.StrictMode>
+);
