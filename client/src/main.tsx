@@ -5,6 +5,10 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider, Route } from "react-router-dom";
 import Deck from "./Deck";
 import { Header } from "./Header";
+import { ReactKeycloakProvider } from "@react-keycloak/web";
+import keycloak from "./Keycloak";
+import LoginPage from "./LoginPage";
+import Profile from "./Profile";
 
 const router = createBrowserRouter([
   {
@@ -15,13 +19,23 @@ const router = createBrowserRouter([
     path: "/decks/:deckId",
     element: <Deck />,
   },
+  {
+    path: "/login",
+    element: <LoginPage />,
+  },
+  {
+    path: "/profile",
+    element: <Profile />,
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <React.StrictMode>
-    <div className="page">
-      <Header />
-      <RouterProvider router={router} />
-    </div>
-  </React.StrictMode>
+  <ReactKeycloakProvider authClient={keycloak}>
+    <React.StrictMode>
+      <div className="page">
+        <Header />
+        <RouterProvider router={router} />
+      </div>
+    </React.StrictMode>
+  </ReactKeycloakProvider>
 );

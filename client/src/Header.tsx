@@ -15,6 +15,9 @@ export function Header() {
         <div>
           <a href="/login">Login</a>
         </div>
+        <div>
+          <a href="/profile">Profile</a>
+        </div>
       </div>
     </div>
   );
