@@ -14,14 +14,14 @@ function Profile() {
 
     console.log(idTokenParsed);
     console.log(keycloak.tokenParsed);
-    // Check if idTokenParsed exists before accessing its properties
+  // Check if idTokenParsed exists before accessing its properties
   const username = idTokenParsed?.preferred_username || "N/A";
   const email = idTokenParsed?.email || "N/A";
 
   return (
     <div>
       <h2>JWT Token</h2>
-      <p>TOKEN: {username}</p>
+      <p>Username: {username}</p>
       <p>Email: {email}</p>
     </div>
   );
