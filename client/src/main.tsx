@@ -1,14 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
+import App from "./app/App";
 import "./index.css";
 import { createBrowserRouter, RouterProvider, Route } from "react-router-dom";
-import Deck from "./Deck";
-import { Header } from "./Header";
+import Deck from "./app/Deck";
+import { Header } from "./app/Header";
 import { ReactKeycloakProvider } from "@react-keycloak/web";
-import keycloak from "./Keycloak";
-import LoginPage from "./LoginPage";
-import Profile from "./Profile";
+import keycloak from "./keycloak/Keycloak";
+import LoginPage from "./app/LoginPage";
+import Profile from "./app/Profile";
 
 const router = createBrowserRouter([
   {
